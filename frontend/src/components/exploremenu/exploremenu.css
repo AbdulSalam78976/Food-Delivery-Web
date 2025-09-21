@@ -1,0 +1,110 @@
+/* ===================== EXPLORE MENU SECTION ===================== */
+.explore-menu {
+  padding: 60px 20px;
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  color: #333;
+  background: #fafafa;
+}
+
+.explore-menu h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.explore-menu p {
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+  line-height: 1.6;
+  color: #555;
+  opacity: 0.9;
+}
+
+/* ===================== MENU GRID ===================== */
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 40px;
+  justify-items: center;
+}
+
+/* ===================== MENU ITEM ===================== */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+  transform: translateY(-6px);
+}
+
+.menu-item img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover img {
+  transform: scale(1.08);
+}
+
+.menu-item h3 {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.3s ease;
+}
+
+.menu-item:hover h3 {
+  color: #ff6600;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .explore-menu h1 {
+    font-size: 2rem;
+  }
+
+  .explore-menu p {
+    font-size: 0.95rem;
+  }
+
+  .menu-item h3 {
+    font-size: 1rem;
+  }
+
+  /* Force 4 items per row on tablet/mobile */
+  .menu-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+  }
+
+  .menu-item {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small phones: 2 per row */
+  .menu-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .menu-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .menu-item h3 {
+    font-size: 0.9rem;
+  }
+}
