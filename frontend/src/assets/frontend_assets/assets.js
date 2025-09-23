@@ -1,7 +1,14 @@
 import basket_icon from './basket_icon.png'
 import logo from './logo.png'
-import header_img from './header_img.png'
 import search_icon from './search_icon.png'
+import header_img from './header_img.png'
+import hero_1 from './hero-1.webp'
+import hero_2 from './hero-2.webp'
+import hero_3 from './hero-3.webp'
+import hero_4 from './hero-4.webp'
+import hero_5 from './hero-5.webp'
+
+
 import menu_1 from './menu_1.png'
 import menu_2 from './menu_2.png'
 import menu_3 from './menu_3.png'
@@ -81,7 +88,7 @@ export const assets = {
     bag_icon,
     parcel_icon
 }
-
+export const hero_images = [hero_1, hero_2, hero_3, hero_4, hero_5];
 export const menu_list = [
     {
         menu_name: "Salad",

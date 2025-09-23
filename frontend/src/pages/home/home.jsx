@@ -1,17 +1,16 @@
-
 import React from 'react';
-import navbar from '../../components/navbar/navbar';
 import './home.css';
-import Header from '../../components/header/header';
-import ExploreMenu from '../../components/exploremenu/exploremenu';
+import ExploreMenu from '../../components/exploremenu/ExploreMenu';
+import Hero from '../../components/hero/hero';
+import FoodDisplay from '../../components/fooddisplay/fooddisplay';
 
 export default function Home() {
-  const [category, setCategorie] = React.useState('All');
+  const [category, setCategory] = React.useState('All');
   return (
     <div>
-     
-     <Header />
-     <ExploreMenu />
+     <Hero />
+      <ExploreMenu category={category} setCategory={setCategory} />
+      <FoodDisplay category={category} />
     </div>
   );
 }

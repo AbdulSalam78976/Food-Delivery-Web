@@ -1,23 +1,24 @@
-/* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&display=swap');
+/* Navbar uses global CSS variables from index.css */
 
 /* Navbar container */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 40px;
+  padding: var(--spacing-sm) var(--container-padding);
   font-family: 'Outfit', sans-serif;
-  background: #fff; /* optional background */
+  background: var(--bg-secondary);
+ 
   z-index: 1000;
+  box-shadow: var(--shadow);
 }
 
 /* Logo */
 .logo {
-
   height: 75px;
   cursor: pointer;
-  transition: transform 0.3s ease, height 0.3s ease;
+  transition: var(--transition);
+  filter: brightness(1.1);
 }
 
 .logo:hover {
@@ -28,23 +29,23 @@
 .navbar-menu {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: var(--spacing-lg);
   margin: 0;
   padding: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: var(--transition);
 }
 
 .navbar-item {
   font-size: 19px;
   font-weight: 600;
   cursor: pointer;
-  color: #49557e;
+  color: var(--secondary-color);
   transition: color 0.3s ease, transform 0.2s ease;
   position: relative;
 }
 
 .navbar-item:hover {
-  color: #ff6600;
+  color: var(--primary-color);
   transform: translateY(-2px);
 }
 
@@ -56,7 +57,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #ff6600;
+  background: var(--primary-color);
   transition: width 0.3s ease;
 }
 
@@ -68,7 +69,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: var(--spacing-md);
 }
 
 .navbar-right img {
@@ -76,6 +77,7 @@
   height: 24px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  filter: brightness(0) invert(1);
 }
 
 .navbar-right img:hover {
@@ -84,6 +86,7 @@
 
 /* Basket with notification dot */
 .navbar-search-icon {
+  color:white;
   position: relative;
 }
 
@@ -100,7 +103,7 @@
 
 /* Login button */
 .login-button {
-  background: linear-gradient(135deg, #ff6600, #ff8533);
+  background: linear-gradient(135deg, var(--primary-color), #ff8533);
   border: none;
   outline: none;
   padding: 8px 20px;
@@ -114,7 +117,7 @@
 }
 
 .login-button:hover {
-  background: linear-gradient(135deg, #e55b00, #ff751a);
+  background: linear-gradient(135deg, var(--primary-hover), #ff751a);
   transform: translateY(-2px);
 }
 
@@ -132,7 +135,7 @@
 .hamburger span {
   display: block;
   height: 3px;
-  background: #49557e;
+  background:white;
   border-radius: 2px;
   transition: 0.3s ease;
 }
@@ -159,14 +162,15 @@
   left: -100%;
   width: 65%;
   height: 100vh;
-  background: #fff;
+  background: var(--bg-secondary);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 25px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease-in-out;
+  gap: var(--spacing-lg);
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
+  transition: var(--transition);
   z-index: 1100;
+  border-right: 1px solid var(--bg-tertiary);
 }
 
 .navbar-menu.active {
@@ -180,14 +184,15 @@
   right: -100%;
   width: 70%;
   height: 100vh;
-  background: #fff;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  transition: right 0.3s ease-in-out;
+  background: var(--bg-secondary);
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.4);
+  padding: var(--container-padding);
+  transition: var(--transition);
   z-index: 1200;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--spacing-md);
+  border-left: 1px solid var(--bg-tertiary);
 }
 
 .cart-drawer.active {
@@ -195,17 +200,17 @@
 }
 
 .close-cart {
-  background: #ff6600;
+  background: var(--primary-color);
   border: none;
   padding: 8px 15px;
-  color: #fff;
-  border-radius: 6px;
+  color: var(--white);
+  border-radius: var(--border-radius);
   cursor: pointer;
   align-self: flex-start;
 }
 
 .close-cart:hover {
-  background: #e55b00;
+  background: var(--primary-hover);
 }
 
 /* ===================== Responsive ===================== */
@@ -220,7 +225,7 @@
 /* Mobile view */
 @media (max-width: 768px) {
   .navbar {
-    padding: 12px 20px;
+    padding: var(--spacing-sm) var(--container-padding-mobile);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -244,7 +249,7 @@
   .navbar-cart-mobile {
     display: block;
     position: absolute;
-    right: 20px;
+    right: var(--container-padding-mobile);
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -270,7 +275,7 @@
   .hamburger {
     display: flex;
     position: absolute;
-    left: 20px;
+    left: var(--container-padding-mobile);
     top: 50%;
     transform: translateY(-50%);
   }
@@ -292,8 +297,10 @@
     position: static;
     height: auto;
     flex-direction: row;
-    gap: 30px;
+    gap: var(--spacing-lg);
     box-shadow: none;
+    background: transparent;
+    border: none;
   }
 
   .hamburger,

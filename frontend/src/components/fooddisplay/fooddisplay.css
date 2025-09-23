@@ -1,0 +1,69 @@
+/* ===================== FOOD DISPLAY SECTION ===================== */
+.food-display {
+  padding: var(--spacing-xxl) var(--container-padding);
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.food-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.food-section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-dark);
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ===================== FOOD GRID ===================== */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  padding: 0 var(--container-padding);
+}
+
+/* ===================== FOOD GRID ===================== */
+
+/* ===================== NO ITEMS ===================== */
+.no-items {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--text-light);
+  font-size: 1.1rem;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .food-display {
+    padding: var(--spacing-xl) var(--container-padding-mobile);
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    padding: 0;
+  }
+
+  .food-section-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+  }
+
+}
+
+@media (max-width: 480px) {
+  .food-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+
+  .food-section-title {
+    font-size: 1.6rem;
+  }
+}

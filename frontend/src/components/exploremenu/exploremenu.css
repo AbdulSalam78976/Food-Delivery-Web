@@ -1,25 +1,25 @@
 /* ===================== EXPLORE MENU SECTION ===================== */
 .explore-menu {
-  padding: 60px 20px;
+  padding: var(--spacing-xxl) var(--container-padding);
   text-align: center;
   font-family: 'Outfit', sans-serif;
-  color: #333;
-  background: #fafafa;
+  color: var(--text-dark);
+  background: var(--bg-dark);
 }
 
 .explore-menu h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 15px;
-  color: #222;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-dark);
 }
 
 .explore-menu p {
   font-size: 1rem;
-  max-width: 800px;
-  margin: 0 auto 50px auto;
+  max-width: 1000px;
+  margin: 0 auto var(--spacing-xl) auto;
   line-height: 1.6;
-  color: #555;
+  color: var(--text-light);
   opacity: 0.9;
 }
 
@@ -27,8 +27,11 @@
 .menu-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 40px;
+  gap: var(--spacing-xl);
   justify-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
 }
 
 /* ===================== MENU ITEM ===================== */
@@ -37,7 +40,9 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: var(--transition);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
 }
 
 .menu-item:hover {
@@ -48,7 +53,8 @@
   width: 140px;
   height: 140px;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: var(--transition);
+  filter: brightness(1.1);
 }
 
 .menu-item:hover img {
@@ -56,47 +62,93 @@
 }
 
 .menu-item h3 {
-  margin-top: 15px;
+  margin-top: var(--spacing-sm);
   font-size: 1.1rem;
   font-weight: 600;
-  color: #222;
-  transition: color 0.3s ease;
+  color: var(--text-dark);
+  transition: var(--transition);
 }
 
 .menu-item:hover h3 {
-  color: #ff6600;
+  color: var(--primary-color);
 }
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
+  .explore-menu {
+    padding: var(--spacing-xl) var(--container-padding-mobile);
+  }
+
   .explore-menu h1 {
     font-size: 2rem;
+    margin-bottom: var(--spacing-xs);
   }
 
   .explore-menu p {
     font-size: 0.95rem;
+    margin-bottom: var(--spacing-lg);
   }
 
   .menu-item h3 {
     font-size: 1rem;
   }
 
-  /* Force 4 items per row on tablet/mobile */
+  /* Horizontal scrollable menu on mobile */
   .menu-list {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    display: flex;
+    overflow-x: auto;
+    gap: var(--spacing-md);
+    padding: var(--container-padding-mobile);
+    justify-content: flex-start;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--bg-secondary);
+  }
+
+  .menu-list::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .menu-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+  }
+
+  .menu-list::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
   }
 
   .menu-item {
-    max-width: 100%;
+    flex-shrink: 0;
+    min-width: 120px;
+    max-width: 140px;
+  }
+
+  .menu-item img {
+    width: 120px;
+    height: 120px;
   }
 }
 
 @media (max-width: 480px) {
-  /* Small phones: 2 per row */
+  .explore-menu {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .explore-menu h1 {
+    font-size: 1.8rem;
+  }
+
   .menu-list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+
+  .menu-item {
+    min-width: 100px;
+    max-width: 120px;
   }
 
   .menu-item img {
@@ -106,5 +158,21 @@
 
   .menu-item h3 {
     font-size: 0.9rem;
+    margin-top: var(--spacing-xs);
   }
+}
+/* ===================== ACTIVE STATE ===================== */
+.menu-item.active {
+  background: var(--bg-tertiary);
+  border: 2px solid var(--primary-color);
+  transform: scale(1.05);
+}
+
+.menu-item.active h3 {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.menu-item.active img {
+  filter: brightness(1.2) contrast(1.1);
 }
