@@ -1,0 +1,7 @@
+.divider {
+  height: 3px;
+ 
+  background-color: tomato;
+  border-radius: 2px;
+  margin: 0 50px;
+}

@@ -1,5 +1,6 @@
 /* ===================== EXPLORE MENU SECTION ===================== */
 .explore-menu {
+ 
   padding: var(--spacing-xxl) var(--container-padding);
   text-align: center;
   font-family: 'Outfit', sans-serif;
@@ -23,15 +24,33 @@
   opacity: 0.9;
 }
 
-/* ===================== MENU GRID ===================== */
+/* ===================== MENU LIST (Horizontal scroll for all screens) ===================== */
 .menu-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--spacing-xl);
-  justify-items: center;
-  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--container-padding);
+  display: flex;
+  overflow-x: auto;
+  gap: var(--spacing-lg);
+  padding: var(--container-padding);
+  justify-content: flex-start;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--bg-secondary);
+}
+
+.menu-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.menu-list::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.menu-list::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
 }
 
 /* ===================== MENU ITEM ===================== */
@@ -43,6 +62,9 @@
   transition: var(--transition);
   padding: var(--spacing-sm);
   border-radius: var(--border-radius);
+  flex-shrink: 0;
+  min-width: 140px;
+  max-width: 160px;
 }
 
 .menu-item:hover {
@@ -89,39 +111,7 @@
     margin-bottom: var(--spacing-lg);
   }
 
-  .menu-item h3 {
-    font-size: 1rem;
-  }
-
-  /* Horizontal scrollable menu on mobile */
-  .menu-list {
-    display: flex;
-    overflow-x: auto;
-    gap: var(--spacing-md);
-    padding: var(--container-padding-mobile);
-    justify-content: flex-start;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) var(--bg-secondary);
-  }
-
-  .menu-list::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .menu-list::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
-    border-radius: 3px;
-  }
-
-  .menu-list::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 3px;
-  }
-
   .menu-item {
-    flex-shrink: 0;
     min-width: 120px;
     max-width: 140px;
   }
@@ -129,6 +119,10 @@
   .menu-item img {
     width: 120px;
     height: 120px;
+  }
+
+  .menu-item h3 {
+    font-size: 1rem;
   }
 }
 
@@ -161,6 +155,7 @@
     margin-top: var(--spacing-xs);
   }
 }
+
 /* ===================== ACTIVE STATE ===================== */
 .menu-item.active {
   background: var(--bg-tertiary);

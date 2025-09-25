@@ -1,8 +1,12 @@
-import React from 'react';
-import './exploremenu.css';
-import { menu_list } from '../../assets/frontend_assets/assets';
+import React from "react";
+import "./exploremenu.css";
+import { menu_list } from "../../assets/frontend_assets/assets";
 
 function ExploreMenu({ category, setCategory }) {
+  const handleClick = (itemName) => {
+    setCategory((prev) => (prev === itemName ? "All" : itemName));
+  };
+
   return (
     <div className="explore-menu" id="explore-menu">
       <h1>Explore Our Menu</h1>
@@ -18,11 +22,14 @@ function ExploreMenu({ category, setCategory }) {
         {menu_list.map((item, index) => (
           <div
             key={index}
-            className={`menu-item ${category === item.menu_name ? 'active' : ''}`}
-            onClick={() =>
-              setCategory((prev) =>
-                prev === item.menu_name ? 'All' : item.menu_name
-              )
+            className={`menu-item ${
+              category === item.menu_name ? "active" : ""
+            }`}
+            role="button"
+            tabIndex={0}
+            onClick={() => handleClick(item.menu_name)}
+            onKeyDown={(e) =>
+              (e.key === "Enter" || e.key === " ") && handleClick(item.menu_name)
             }
           >
             <img src={item.menu_image} alt={item.menu_name} />
