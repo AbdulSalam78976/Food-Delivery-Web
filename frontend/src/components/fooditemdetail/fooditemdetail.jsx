@@ -1,98 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { StoreContext } from "../context/storecontext";
+import { assets } from "../../assets/frontend_assets/assets";
+import "./fooditemdetail.css";
 
-function FoodItemDetail({ food, onClose, onAddToCart }) {
-  const [size, setSize] = useState("M"); // for Pizza
-  const [mealOption, setMealOption] = useState("simple"); // for Burger
-  const [addons, setAddons] = useState([]);
+function FoodItemDetail({ food, onClose }) {
+  const { addToCart } = useContext(StoreContext);
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState("M"); // Only used when category is Pizza
+  const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddonChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setAddons((prev) => [...prev, value]);
-    } else {
-      setAddons((prev) => prev.filter((a) => a !== value));
+  // no addons/variants in simplified dialog
+
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    try {
+      const details = { ...food, quantity, size };
+      addToCart(details);
+      // Small delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+      if (onClose) onClose();
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    } finally {
+      setIsAdding(false);
     }
   };
 
-  const handleAddToCart = () => {
-    const details = { ...food, size, mealOption, addons };
-    if (onAddToCart) onAddToCart(details);
-    if (onClose) onClose();
+  const updateQuantity = (change) => {
+    const newQuantity = quantity + change;
+    if (newQuantity >= 1 && newQuantity <= 10) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  // Calculate total price (no addons)
+  const calculateTotalPrice = () => {
+    return food.price * quantity;
   };
 
   return (
     <div className="dialog-backdrop" onClick={onClose}>
       <div className="dialog" onClick={(e) => e.stopPropagation()}>
-        <h2>{food.name}</h2>
-        <img src={food.image} alt={food.name} />
-        <p>{food.description}</p>
-        <p className="food-price">Rs. {food.price}</p>
-
-        {/* Pizza Options */}
-        {food.category === "Pizza" && (
-          <div className="option-group">
-            <h4>Choose Size:</h4>
-            <select value={size} onChange={(e) => setSize(e.target.value)}>
-              <option value="S">Small</option>
-              <option value="M">Medium</option>
-              <option value="L">Large</option>
-            </select>
+        <button className="close-dialog-btn" onClick={onClose}>
+          <img src={assets.cross_icon} alt="Close" />
+        </button>
+        
+        <div className="dialog-content">
+          <div className="food-image-container">
+            <img src={food.image} alt={food.name} />
           </div>
-        )}
+          
+          <div className="food-details">
+            <h2>{food.name}</h2>
+            <p className="food-category">{food.category}</p>
+            <p className="food-description">{food.description}</p>
+            <p className="food-price">Rs. {food.price}</p>
 
-        {/* Burger Options */}
-        {food.category === "Burger" && (
-          <div className="option-group">
-            <h4>Choose Meal:</h4>
-            <select
-              value={mealOption}
-              onChange={(e) => setMealOption(e.target.value)}
-            >
-              <option value="simple">Simple Burger</option>
-              <option value="meal">With Fries & Drink</option>
-              <option value="cheese">Cheese Meal</option>
-            </select>
+            {/* Pizza size selector */}
+            {food.category === "Pizza" && (
+              <div className="option-group">
+                <h4>Choose Size:</h4>
+                <div className="size-selector">
+                  {['S','M','L'].map(s => (
+                    <button
+                      key={s}
+                      type="button"
+                      className={`size-btn ${size === s ? 'active' : ''}`}
+                      onClick={() => setSize(s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quantity Selector */}
+            <div className="option-group">
+              <h4>Quantity:</h4>
+              <div className="quantity-selector">
+                <button 
+                  className="quantity-btn" 
+                  onClick={() => updateQuantity(-1)}
+                  disabled={quantity <= 1}
+                >
+                  -
+                </button>
+                <span className="quantity">{quantity}</span>
+                <button 
+                  className="quantity-btn" 
+                  onClick={() => updateQuantity(1)}
+                  disabled={quantity >= 10}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Total */}
+            <div className="price-breakdown">
+              <div className="price-row total-price">
+                <span>Total</span>
+                <span>Rs. {calculateTotalPrice()}</span>
+              </div>
+            </div>
+
+
+            <div className="dialog-actions">
+              <button 
+                className="add-to-cart-btn" 
+                onClick={handleAddToCart}
+                disabled={isAdding}
+              >
+                {isAdding ? 'Adding...' : `Add to Cart - Rs. ${calculateTotalPrice()}`}
+              </button>
+            </div>
           </div>
-        )}
-
-        {/* Common Add-ons */}
-        <div className="option-group">
-          <h4>Optional Add-ons:</h4>
-          <label>
-            <input
-              type="checkbox"
-              value="Ketchup"
-              checked={addons.includes("Ketchup")}
-              onChange={handleAddonChange}
-            />
-            Extra Ketchup
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="Mayo"
-              checked={addons.includes("Mayo")}
-              onChange={handleAddonChange}
-            />
-            Mayo Dip
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="Drink"
-              checked={addons.includes("Drink")}
-              onChange={handleAddonChange}
-            />
-            Cold Drink
-          </label>
         </div>
-
-        <button className="full-add-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
-        <button className="close-btn" onClick={onClose}>
-          Close
-        </button>
       </div>
     </div>
   );

@@ -5,8 +5,7 @@ function SideMenu({ menuOpen, toggleMenu }) {
   return (
     <div className={`side-menu ${menuOpen ? "active" : ""}`}>
       <div className="side-menu-header">
-        <h3>Menu</h3>
-        <button className="close-btn" onClick={toggleMenu}>×</button>
+        <h3 >Menu</h3>
       </div>
       <ul className="side-menu-list">
         <li><a href="#hero" onClick={toggleMenu}>Home</a></li>

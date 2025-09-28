@@ -1,4 +1,5 @@
 .side-menu {
+  text-align: center;
   position: fixed;
   top: 0;
   left: -100%; /* hidden by default */
@@ -25,18 +26,13 @@
 }
 
 .side-menu-header h3 {
+  text-align: center;
   margin: 0;
   font-size: 1.2rem;
   color: var(--primary-color);
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  color: var(--text-light);
-  cursor: pointer;
-}
+
 
 .side-menu-list {
   list-style: none;

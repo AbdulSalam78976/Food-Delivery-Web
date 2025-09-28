@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./navbar.css";
 import { assets } from "../../assets/frontend_assets/assets";
-import SideMenu from "../sidemenu/sidemenu";
+import { StoreContext } from "../context/storecontext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [cartOpen, setCartOpen] = React.useState(false);
+  const { getTotalCartItems } = useContext(StoreContext);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -27,16 +29,29 @@ const Navbar = () => {
       </div>
 
       {/* Logo */}
-      <img src={assets.logo} className="logo" alt="Logo" />
+      <Link to="/">
+        <img src={assets.logo} className="logo" alt="Logo" />
+      </Link>
 
       {/* Mobile Cart */}
-      <div className="navbar-cart-mobile" onClick={toggleCart}>
-        <img src={assets.basket_icon} alt="Basket Icon" />
-        <div className="dot"></div>
-      </div>
+      <Link to="/cart" className="navbar-cart-mobile">
+        <img src={assets.bag_icon} alt="Cart" />   
+        {getTotalCartItems() > 0 && <div className="dot">{getTotalCartItems()}</div>}
+      </Link>
 
-      {/* ✅ Side Menu Drawer Component */}
-      <SideMenu menuOpen={menuOpen} toggleMenu={toggleMenu} />
+      {/* Menu Drawer */}
+      <ul className={`navbar-menu ${menuOpen ? "active" : ""}`}>
+        <li className="navbar-item" onClick={toggleMenu}>
+          <Link to="/">Home</Link>
+        </li>
+        <li className="navbar-item" onClick={toggleMenu}>
+          <Link to="/">Menu</Link>
+        </li>
+        <li className="navbar-item" onClick={toggleMenu}>
+          <Link to="/">About</Link>
+        </li>
+        {/* Auth links removed as requested */}
+      </ul>
 
       {/* Cart Drawer */}
       <div className={`cart-drawer ${cartOpen ? "active" : ""}`}>
@@ -51,12 +66,10 @@ const Navbar = () => {
 
       {/* Desktop Right Section */}
       <div className="navbar-right">
-        <img src={assets.search_icon} alt="Search Icon" className="search-icon" />
-        <div className="navbar-search-icon" onClick={toggleCart}>
-          <img src={assets.basket_icon} alt="Basket Icon" />
-          <div className="dot"></div>
-        </div>
-        <button className="login-button">Login</button>
+        <Link to="/cart" className="navbar-basket-icon" onClick={toggleCart}>
+          <img src={assets.basket_icon} alt="Cart" />
+          {getTotalCartItems() > 0 && <div className="dot">{getTotalCartItems()}</div>}
+        </Link>
       </div>
     </div>
   );

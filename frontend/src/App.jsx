@@ -2,7 +2,9 @@ import React from 'react'
 import Navbar from './components/navbar/navbar'
 import Home from './pages/home/home'
 import Cart from './pages/cart/cart'
-import PlaceOrder from './pages/placeorder/placeorder'
+import Checkout from './pages/checkout/checkout'
+import Login from './pages/auth/login/login'
+import Signup from './pages/auth/signup/signup'
 import { Route, Routes } from 'react-router-dom'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -17,7 +19,9 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/order' element={<PlaceOrder />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='*' element={
           <div style={{
             display: 'flex',

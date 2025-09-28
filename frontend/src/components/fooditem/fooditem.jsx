@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./fooditem.css";
 import FoodItemDetail from "../fooditemdetail/fooditemdetail";
+import { StoreContext } from "../context/storecontext";
+import { useToast } from "../toast/ToastProvider";
 
 function FoodItem({ food }) {
   const [open, setOpen] = useState(false);
+  const { addToCart } = useContext(StoreContext);
+  const { success } = useToast();
 
   const handleCardClick = () => {
     setOpen(true);
@@ -14,8 +18,8 @@ function FoodItem({ food }) {
   };
 
   const handleAddToCart = (details) => {
-    console.log("Added to cart:", details);
-    // Later, replace console.log with actual add-to-cart logic (context/state)
+    addToCart(details);
+    success(`${details.name} added to cart`);
   };
 
   return (
@@ -52,7 +56,6 @@ function FoodItem({ food }) {
         <FoodItemDetail
           food={food}
           onClose={handleClose}
-          onAddToCart={handleAddToCart}
         />
       )}
     </>

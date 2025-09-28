@@ -1,25 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './fooddisplay.css';
-import { food_list } from '../../assets/frontend_assets/assets';
+import { StoreContext } from '../context/storecontext';
 import FoodItem from '../fooditem/fooditem';
 
 function FoodDisplay({ category }) {
+  const { food_list } = useContext(StoreContext);
+  
   // Filter food items based on selected category
   const filteredFoods = category === 'All' 
     ? food_list 
     : food_list.filter(food => food.category === category);
 
-  // Handle add to cart functionality
-  const handleAddToCart = (food) => {
-    console.log('Added to cart:', food.name);
-    // TODO: Implement actual cart functionality
-  };
-
   return (
     <div className="food-display">
       <div className="food-container">
         <h2 className="food-section-title">
-          {category === 'All' ? 'All Items' : `${category} Items`}
+          {category === 'All' ? 'All Items' : `${category} `}
         </h2>
         
         {filteredFoods.length > 0 ? (
@@ -27,8 +23,7 @@ function FoodDisplay({ category }) {
             {filteredFoods.map((food) => (
               <FoodItem 
                 key={food._id} 
-                food={food} 
-                onAddToCart={handleAddToCart}
+                food={food}
               />
             ))}
           </div>

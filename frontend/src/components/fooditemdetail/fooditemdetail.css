@@ -5,126 +5,299 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  padding: var(--spacing-md);
 }
 
 /* Dialog box */
 .dialog {
-  background: #1a1a1a; /* dark background */
-  color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 420px;
-  max-width: 90%;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-  animation: fadeIn 0.3s ease;
-}
-
-/* Title */
-.dialog h2 {
-  color: #f9a825; /* yellow */
-  margin-bottom: 12px;
-}
-
-/* Product image */
-.dialog img {
+  background: var(--bg-dark );
+  color: var(--text-dark);
+  border-radius: var(--border-radius);
   width: 100%;
-  border-radius: 8px;
-  margin: 12px 0;
-  max-height: 200px;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--bg-tertiary);
+  animation: fadeIn 0.3s ease;
+  position: relative;
+}
+
+/* Close button */
+.close-dialog-btn {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: 50%;
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.close-dialog-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.close-dialog-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+/* Dialog content */
+.dialog-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+}
+
+.food-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-image-container img {
+  width: 100%;
+  max-width: 520px;
+  height: 420px;
+  border-radius: var(--border-radius);
   object-fit: cover;
+  box-shadow: var(--shadow);
 }
 
-/* Description */
-.dialog p {
-  font-size: 14px;
-  margin: 8px 0;
-  color: #ddd;
+.food-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
-/* Price */
-.dialog .food-price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #f9a825; /* yellow */
-  margin: 12px 0;
+/* Food details */
+.dialog h2 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-xs);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.food-category {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.food-description {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+}
+
+.food-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
 }
 
 /* Option groups */
 .option-group {
-  text-align: left;
-  margin: 12px 0;
+  margin-bottom: var(--spacing-lg);
 }
 
 .option-group h4 {
-  margin-bottom: 6px;
-  color: #f9a825;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.option-group select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  background: #333;
-  color: white;
-  font-size: 14px;
+/* Quantity selector */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  justify-content: center;
 }
 
-.option-group label {
-  display: block;
-  margin: 6px 0;
-  font-size: 14px;
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: var(--transition);
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-.option-group input[type="checkbox"] {
-  margin-right: 8px;
+.quantity-btn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
 }
 
-/* Add to Cart Button */
-.full-add-btn {
-  margin-top: 12px;
-  width: 100%;
-  padding: 10px;
-  background: #d32f2f;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
+.quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+}
+
+/* Add-ons grid */
+/* Size selector for Pizza */
+.size-selector {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.size-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--bg-tertiary);
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: var(--transition);
+  font-weight: 600;
+  min-width: 50px;
 }
 
-.full-add-btn:hover {
-  background: #b71c1c;
+.size-btn:hover {
+  border-color: var(--primary-color);
+  background: rgba(255, 102, 0, 0.1);
 }
 
-/* Close Button */
-.close-btn {
-  margin-top: 10px;
+.size-btn.active {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* Price breakdown */
+.price-breakdown {
+  background: var(--bg-dark);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  border: 1px solid var(--bg-tertiary);
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.price-row:last-child {
+  margin-bottom: 0;
+}
+
+.addon-prices {
+  margin: var(--spacing-xs) 0;
+  padding-left: var(--spacing-sm);
+  border-left: 2px solid var(--bg-tertiary);
+}
+
+.total-price {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  padding-top: var(--spacing-xs);
+  border-top: 1px solid var(--bg-tertiary);
+  margin-top: var(--spacing-xs);
+}
+
+/* Dialog actions */
+.dialog-actions {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--bg-tertiary);
+}
+
+.add-to-cart-btn {
   width: 100%;
-  padding: 8px;
-  background: #555;
-  color: white;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--primary-color);
+  color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: var(--transition);
 }
 
-.close-btn:hover {
-  background: #333;
+.add-to-cart-btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dialog {
+    max-width: 95%;
+    margin: var(--spacing-sm);
+  }
+  
+  .dialog-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+  
+  .food-image-container img {
+    height: 260px;
+  }
+  
+  .size-selector {
+    flex-wrap: wrap;
+  }
+  
+  .dialog h2 {
+    font-size: 1.5rem;
+  }
 }
