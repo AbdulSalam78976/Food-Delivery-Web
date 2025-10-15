@@ -92,7 +92,8 @@
 }
 
 .footer-contact i {
-  color: var(--primary-color);
+ 
+  color: var(--text-light);
   width: 16px;
   margin-top: 2px;
   flex-shrink: 0;

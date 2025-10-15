@@ -2,12 +2,15 @@ import React, { useState, useContext } from "react";
 import { StoreContext } from "../context/storecontext";
 import { assets } from "../../assets/frontend_assets/assets";
 import "./fooditemdetail.css";
+import { useToast } from "../toast/ToastProvider";
 
 function FoodItemDetail({ food, onClose }) {
   const { addToCart } = useContext(StoreContext);
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("M"); // Only used when category is Pizza
   const [isAdding, setIsAdding] = useState(false);
+  const { success } = useToast();
+  
 
   // no addons/variants in simplified dialog
 
@@ -16,6 +19,7 @@ function FoodItemDetail({ food, onClose }) {
     try {
       const details = { ...food, quantity, size };
       addToCart(details);
+       success(`${details.name} added to cart`);
       // Small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 500));
       if (onClose) onClose();

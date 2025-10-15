@@ -27,14 +27,21 @@ function FoodItem({ food }) {
       {/* Food Card */}
       <div className="food-item" onClick={handleCardClick}>
         <div className="food-image-container">
-          <img src={food.image} alt={food.name} className="food-image" />
+          <img 
+            src={food.image_url || "/assets/frontend_assets/food_1.png"} 
+            alt={food.name} 
+            className="food-image"
+            onError={(e) => {
+              e.target.src = "/assets/frontend_assets/food_1.png";
+            }}
+          />
         </div>
         <div className="food-info">
           <h3 className="food-name">{food.name}</h3>
           <p className="food-description">
-            {food.description.length > 60
+            {food.description && food.description.length > 60
               ? food.description.slice(0, 60) + "..."
-              : food.description}
+              : food.description || "Delicious food item"}
           </p>
           <div className="food-footer">
             <span className="food-price">Rs. {food.price}</span>

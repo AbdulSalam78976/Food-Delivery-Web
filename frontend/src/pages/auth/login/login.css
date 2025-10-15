@@ -10,7 +10,7 @@
 .auth-container {
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
-  padding: var(--spacing-xxl);
+  padding: var(--spacing-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--bg-tertiary);
   width: 100%;

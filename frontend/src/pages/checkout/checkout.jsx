@@ -2,18 +2,23 @@ import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './checkout.css'
 import { StoreContext } from '../../components/context/storecontext'
+import { useAuth } from '../../hooks/useAuth'
+import { databaseService } from '../../lib/database'
+import { useToast } from '../../components/toast/ToastProvider'
 import { assets } from '../../assets/frontend_assets/assets'
 
 function Checkout() {
-  const { cartItems, getTotalCartAmount, clearCart, user } = useContext(StoreContext)
+  const { cartItems, getTotalCartAmount, clearCart } = useContext(StoreContext)
+  const { user, isAuthenticated } = useAuth()
   const navigate = useNavigate()
+  const { success, error: toastError } = useToast()
   
   const [formData, setFormData] = useState({
     deliveryAddress: '',
     city: '',
     state: '',
     zipCode: '',
-    phone: user?.phone || '',
+    phone: user?.user_metadata?.phone || '',
     paymentMethod: 'cash',
     specialInstructions: ''
   })
@@ -60,7 +65,7 @@ function Checkout() {
     
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required'
-    } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ''))) {
+    } else if (!/^\d{11}$/.test(formData.phone.replace(/\D/g, ''))) {
       newErrors.phone = 'Please enter a valid 10-digit phone number'
     }
     
@@ -71,7 +76,7 @@ function Checkout() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (!user) {
+    if (!isAuthenticated || !user) {
       navigate('/login')
       return
     }
@@ -86,14 +91,58 @@ function Checkout() {
     setIsProcessing(true)
     
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Prepare order data
+      const deliveryAddress = `${formData.deliveryAddress}, ${formData.city}, ${formData.state} ${formData.zipCode}`
+      const totalAmount = getTotalCartAmount() + 50 // including delivery fee
+      
+      const orderData = {
+        user_id: user.id,
+        status: 'pending',
+        total_amount: totalAmount,
+        delivery_address: deliveryAddress,
+        payment_method: formData.paymentMethod,
+        notes: formData.specialInstructions
+      }
+      
+      // Create order in Supabase
+      const { data: order, error: orderError } = await databaseService.createOrder(orderData)
+      
+      if (orderError) {
+        throw orderError
+      }
+      
+      // Create order items
+      const orderItems = cartItems.map(item => ({
+        order_id: order.id,
+        food_item_id: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }))
+      
+      const { error: itemsError } = await databaseService.createOrderItems(orderItems)
+      
+      if (itemsError) {
+        throw itemsError
+      }
+      
+      // Save address for future use
+      await databaseService.createAddress({
+        user_id: user.id,
+        street_address: formData.deliveryAddress,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        is_default: false
+      })
       
       // Clear cart and show success
       clearCart()
+      success('Order placed successfully!')
       setOrderPlaced(true)
     } catch (error) {
-      setErrors({ general: 'Order failed. Please try again.' })
+      console.error('Order error:', error)
+      setErrors({ general: error.message || 'Order failed. Please try again.' })
+      toastError('Order failed')
     } finally {
       setIsProcessing(false)
     }
@@ -121,7 +170,7 @@ function Checkout() {
     )
   }
 
-  if (!user) {
+  if (!isAuthenticated || !user) {
     return (
       <div className="checkout-page">
         <div className="checkout-container">
@@ -277,19 +326,22 @@ function Checkout() {
                       Cash on Delivery
                     </span>
                   </label>
-                  <label className="payment-option">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="card"
-                      checked={formData.paymentMethod === 'card'}
-                      onChange={handleChange}
-                    />
-                    <span className="payment-label">
-                      <img src={assets.bag_icon} alt="Card" />
-                      Credit/Debit Card
-                    </span>
-                  </label>
+              {/*
+  <label className="payment-option">
+    <input
+      type="radio"
+      name="paymentMethod"
+      value="card"
+      checked={formData.paymentMethod === 'card'} 
+      onChange={handleChange}
+    />
+    <span className="payment-label">
+      <img src={assets.bag_icon} alt="Card" />
+      Credit/Debit Card
+    </span>
+  </label>
+*/}
+
                 </div>
               </div>
 
@@ -322,8 +374,14 @@ function Checkout() {
             <h2>Order Summary</h2>
             <div className="order-items">
               {cartItems.map((item) => (
-                <div key={item._id} className="order-item">
-                  <img src={item.image} alt={item.name} />
+                <div key={item.id} className="order-item">
+                  <img 
+                    src={item.image_url || "/assets/frontend_assets/food_1.png"} 
+                    alt={item.name}
+                    onError={(e) => {
+                      e.target.src = "/assets/frontend_assets/food_1.png";
+                    }}
+                  />
                   <div className="item-info">
                     <h4>{item.name}</h4>
                     <p>Qty: {item.quantity}</p>

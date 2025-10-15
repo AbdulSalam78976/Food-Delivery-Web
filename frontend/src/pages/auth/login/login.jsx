@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './login.css'
-import { StoreContext } from '../../../components/context/storecontext'
+import { useAuth } from '../../../hooks/useAuth'
 import { useToast } from '../../../components/toast/ToastProvider'
 import { assets } from '../../../assets/frontend_assets/assets'
 
@@ -12,7 +12,7 @@ function Login() {
   })
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useContext(StoreContext)
+  const { signIn } = useAuth()
   const navigate = useNavigate()
   const { success, error: toastError } = useToast()
 
@@ -58,19 +58,15 @@ function Login() {
     setIsLoading(true)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const { data, error } = await signIn(formData.email, formData.password)
       
-      // For demo purposes, accept any email/password combination
-      const userData = {
-        id: '1',
-        name: formData.email.split('@')[0],
-        email: formData.email
+      if (error) {
+        setErrors({ general: error.message })
+        toastError('Login failed')
+      } else {
+        success('Logged in successfully')
+        navigate('/')
       }
-      
-      login(userData)
-      success('Logged in successfully')
-      navigate('/')
     } catch (error) {
       setErrors({ general: 'Login failed. Please try again.' })
       toastError('Login failed')

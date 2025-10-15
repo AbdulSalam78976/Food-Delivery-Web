@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './signup.css'
-import { StoreContext } from '../../../components/context/storecontext'
+import { useAuth } from '../../../hooks/useAuth'
 import { useToast } from '../../../components/toast/ToastProvider'
 import { assets } from '../../../assets/frontend_assets/assets'
+import { databaseService } from '../../../lib/database'
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ function Signup() {
   })
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useContext(StoreContext)
+  const { signUp } = useAuth()
   const navigate = useNavigate()
   const { success, error: toastError } = useToast()
 
@@ -79,20 +80,30 @@ function Signup() {
     setIsLoading(true)
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // For demo purposes, create user account
+      // Create user profile data
       const userData = {
-        id: Date.now().toString(),
-        name: formData.name.trim(),
-        email: formData.email,
+        full_name: formData.name.trim(),
         phone: formData.phone
       }
       
-      login(userData)
-      success('Account created successfully')
-      navigate('/')
+      // Sign up with Supabase
+      const { data, error } = await signUp(formData.email, formData.password, userData)
+      
+      if (error) {
+        setErrors({ general: error.message })
+        toastError('Signup failed')
+      } else {
+        // Create user profile in database
+        if (data?.user) {
+          await databaseService.createUserProfile(data.user.id, {
+            full_name: formData.name.trim(),
+            phone: formData.phone
+          })
+        }
+        
+        success('Account created successfully! Please check your email to verify your account.')
+        navigate('/login')
+      }
     } catch (error) {
       setErrors({ general: 'Signup failed. Please try again.' })
       toastError('Signup failed')

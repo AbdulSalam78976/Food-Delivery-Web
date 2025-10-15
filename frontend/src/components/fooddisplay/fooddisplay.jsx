@@ -4,12 +4,22 @@ import { StoreContext } from '../context/storecontext';
 import FoodItem from '../fooditem/fooditem';
 
 function FoodDisplay({ category }) {
-  const { food_list } = useContext(StoreContext);
+  const { getFoodItemsByCategory, loading } = useContext(StoreContext);
   
-  // Filter food items based on selected category
-  const filteredFoods = category === 'All' 
-    ? food_list 
-    : food_list.filter(food => food.category === category);
+  // Get food items based on selected category
+  const filteredFoods = getFoodItemsByCategory(category);
+
+  if (loading) {
+    return (
+      <div className="food-display">
+        <div className="food-container">
+          <div className="loading">
+            <p>Loading delicious food items...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="food-display">
@@ -22,7 +32,7 @@ function FoodDisplay({ category }) {
           <div className="food-grid">
             {filteredFoods.map((food) => (
               <FoodItem 
-                key={food._id} 
+                key={food.id} 
                 food={food}
               />
             ))}

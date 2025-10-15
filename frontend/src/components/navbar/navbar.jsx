@@ -2,12 +2,14 @@ import React, { useContext } from "react";
 import "./navbar.css";
 import { assets } from "../../assets/frontend_assets/assets";
 import { StoreContext } from "../context/storecontext";
+import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [cartOpen, setCartOpen] = React.useState(false);
   const { getTotalCartItems } = useContext(StoreContext);
+  const { user, isAuthenticated, signOut } = useAuth();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -17,6 +19,15 @@ const Navbar = () => {
   const toggleCart = () => {
     setCartOpen(!cartOpen);
     setMenuOpen(false); // close menu if cart opens
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setMenuOpen(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -50,24 +61,47 @@ const Navbar = () => {
         <li className="navbar-item" onClick={toggleMenu}>
           <Link to="/">About</Link>
         </li>
-        {/* Auth links removed as requested */}
+        {isAuthenticated ? (
+          <>
+            <li className="navbar-item" onClick={toggleMenu}>
+              <span>Welcome, {user?.user_metadata?.full_name || user?.email}</span>
+            </li>
+            <li className="navbar-item" onClick={handleLogout}>
+              <span>Logout</span>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="navbar-item" onClick={toggleMenu}>
+              <Link to="/login">Login</Link>
+            </li>
+            <li className="navbar-item" onClick={toggleMenu}>
+              <Link to="/signup">Sign Up</Link>
+            </li>
+          </>
+        )}
       </ul>
 
-      {/* Cart Drawer */}
-      <div className={`cart-drawer ${cartOpen ? "active" : ""}`}>
-        <div className="cart-header">
-          <h3>Your Cart</h3>
-          <button className="close-cart" onClick={toggleCart}>×</button>
-        </div>
-        <div className="cart-content">
-          <p>No items added yet.</p>
-        </div>
-      </div>
-
+     
       {/* Desktop Right Section */}
       <div className="navbar-right">
+        {isAuthenticated ? (
+          <>
+            <span className="navbar-welcome">
+              Welcome, {user?.user_metadata?.full_name || user?.email}
+            </span>
+            <button className="navbar-logout" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="navbar-auth-link">Login</Link>
+            <Link to="/signup" className="navbar-auth-link">Sign Up</Link>
+          </>
+        )}
         <Link to="/cart" className="navbar-basket-icon" onClick={toggleCart}>
-          <img src={assets.basket_icon} alt="Cart" />
+          <img src={assets.bag_icon} alt="Cart" />  
           {getTotalCartItems() > 0 && <div className="dot">{getTotalCartItems()}</div>}
         </Link>
       </div>

@@ -1,18 +1,51 @@
-import { createContext, useState } from "react";
-import { food_list } from "../../assets/frontend_assets/assets";
+import { createContext, useState, useEffect } from "react";
+import { databaseService } from "../../lib/database";
+import { useAuth } from "../../hooks/useAuth";
 
 export const StoreContext = createContext(null);
 
 export const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState([]);
-    const [user, setUser] = useState(null);
+    const [foodItems, setFoodItems] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { user, isAuthenticated } = useAuth();
+
+    // Fetch food items and categories from Supabase
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                
+                // Fetch food items and categories in parallel
+                const [foodItemsResult, categoriesResult] = await Promise.all([
+                    databaseService.getFoodItems(),
+                    databaseService.getCategories()
+                ]);
+
+                if (foodItemsResult.data) {
+                    setFoodItems(foodItemsResult.data);
+                }
+
+                if (categoriesResult.data) {
+                    setCategories(categoriesResult.data);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const addToCart = (food, quantity = 1) => {
         setCartItems(prev => {
-            const existingItem = prev.find(item => item._id === food._id);
+            const existingItem = prev.find(item => item.id === food.id);
             if (existingItem) {
                 return prev.map(item =>
-                    item._id === food._id
+                    item.id === food.id
                         ? { ...item, quantity: item.quantity + quantity }
                         : item
                 );
@@ -23,7 +56,7 @@ export const StoreContextProvider = (props) => {
     };
 
     const removeFromCart = (foodId) => {
-        setCartItems(prev => prev.filter(item => item._id !== foodId));
+        setCartItems(prev => prev.filter(item => item.id !== foodId));
     };
 
     const updateCartItemQuantity = (foodId, quantity) => {
@@ -32,7 +65,7 @@ export const StoreContextProvider = (props) => {
         } else {
             setCartItems(prev =>
                 prev.map(item =>
-                    item._id === foodId ? { ...item, quantity } : item
+                    item.id === foodId ? { ...item, quantity } : item
                 )
             );
         }
@@ -50,27 +83,62 @@ export const StoreContextProvider = (props) => {
         setCartItems([]);
     };
 
-    const login = (userData) => {
-        setUser(userData);
+    // Get food items by category
+    const getFoodItemsByCategory = (categoryName) => {
+        if (categoryName === 'All') {
+            return foodItems;
+        }
+        return foodItems.filter(food => 
+            food.category_id && 
+            categories.find(cat => cat.id === food.category_id)?.name === categoryName
+        );
     };
 
-    const logout = () => {
-        setUser(null);
-        clearCart();
+    // Refresh food items
+    const refreshFoodItems = async () => {
+        try {
+            const { data, error } = await databaseService.getFoodItems();
+            if (data && !error) {
+                setFoodItems(data);
+            }
+        } catch (error) {
+            console.error('Error refreshing food items:', error);
+        }
+    };
+
+    // Refresh categories
+    const refreshCategories = async () => {
+        try {
+            const { data, error } = await databaseService.getCategories();
+            if (data && !error) {
+                setCategories(data);
+            }
+        } catch (error) {
+            console.error('Error refreshing categories:', error);
+        }
     };
 
     const contextValue = {
-        food_list,
+        // Data
+        foodItems,
+        categories,
         cartItems,
+        loading,
+        isAuthenticated,
+        user,
+        
+        // Cart functions
         addToCart,
         removeFromCart,
         updateCartItemQuantity,
         getTotalCartAmount,
         getTotalCartItems,
         clearCart,
-        user,
-        login,
-        logout
+        
+        // Food functions
+        getFoodItemsByCategory,
+        refreshFoodItems,
+        refreshCategories
     };
 
     return (

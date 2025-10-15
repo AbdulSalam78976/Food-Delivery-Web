@@ -25,23 +25,29 @@ function Cart() {
           <div className="cart-content">
             <div className="cart-items">
               {cartItems.map((item) => (
-                <div key={item._id} className="cart-item">
+                <div key={item.id} className="cart-item">
                   <div className="item-image">
-                    <img src={item.image} alt={item.name} />
+                    <img 
+                      src={item.image_url || "/assets/frontend_assets/food_1.png"} 
+                      alt={item.name}
+                      onError={(e) => {
+                        e.target.src = "/assets/frontend_assets/food_1.png";
+                      }}
+                    />
                   </div>
                   <div className="item-details">
                     <h3 className="item-name">{item.name}</h3>
                     <p className="item-price">Rs. {item.price}</p>
                     <div className="quantity-controls">
                       <button 
-                        onClick={() => updateCartItemQuantity(item._id, item.quantity - 1)}
+                        onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}
                         className="quantity-btn"
                       >
                         -
                       </button>
                       <span className="quantity">{item.quantity}</span>
                       <button 
-                        onClick={() => updateCartItemQuantity(item._id, item.quantity + 1)}
+                        onClick={() => updateCartItemQuantity(item.id, item.quantity + 1)}
                         className="quantity-btn"
                       >
                         +
@@ -50,7 +56,7 @@ function Cart() {
                   </div>
                   <div className="item-actions">
                     <button 
-                      onClick={() => removeFromCart(item._id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="remove-btn"
                     >
                       <img src={assets.cross_icon} alt="Remove" />
