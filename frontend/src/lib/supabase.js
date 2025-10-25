@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Environment variable names (Vite-specific)
-const supabaseUrl = "https://jwqfluocyhrwuzwrewgc.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3cWZsdW9jeWhyd3V6d3Jld2djIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwNDA0MTAsImV4cCI6MjA3NTYxNjQxMH0.ttRA-EypwEor-Nk2AhbdOJpTzhZ8UAJr720_sSYSNH8"
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Check if we're in development mode
 const isDevelopment = import.meta.env.DEV

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { authService, onAuthStateChange } from '../lib/auth'
+import { useAppLoader } from './AppLoaderContext'
 
 export const AuthContext = createContext({})
 
@@ -7,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [session, setSession] = useState(null)
+  const { updateLoadingStep } = useAppLoader()
 
   useEffect(() => {
     // Get initial session
@@ -19,6 +21,7 @@ export const AuthProvider = ({ children }) => {
         console.error('Error getting initial session:', error)
       } finally {
         setLoading(false)
+        updateLoadingStep('auth', true)
       }
     }
 
@@ -29,6 +32,7 @@ export const AuthProvider = ({ children }) => {
       setSession(session)
       setUser(session?.user || null)
       setLoading(false)
+      updateLoadingStep('auth', true)
     })
 
     return () => {

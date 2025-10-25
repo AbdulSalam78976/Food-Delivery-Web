@@ -1,18 +1,36 @@
-/* ===================== EXPLORE MENU SECTION ===================== */
+/* ===================== ENHANCED EXPLORE MENU SECTION ===================== */
 .explore-menu {
- 
-  padding: var(--spacing-xxl) var(--container-padding);
+  padding: var(--spacing-3xl) var(--container-padding);
   text-align: center;
   font-family: 'Outfit', sans-serif;
   color: var(--text-dark);
-  background: var(--bg-dark);
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.explore-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 102, 0, 0.05) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .explore-menu h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-sm);
-  color: var(--text-dark);
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  margin-bottom: var(--spacing-md);
+  background: linear-gradient(135deg, var(--text-dark), var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(255, 102, 0, 0.3);
+  position: relative;
+  z-index: 1;
 }
 
 .explore-menu p {
@@ -53,22 +71,48 @@
   border-radius: 4px;
 }
 
-/* ===================== MENU ITEM ===================== */
+/* ===================== ENHANCED MENU ITEM ===================== */
 .menu-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: var(--transition);
-  padding: var(--spacing-sm);
-  border-radius: var(--border-radius);
+  transition: var(--transition-bounce);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-lg);
   flex-shrink: 0;
-  min-width: 140px;
-  max-width: 160px;
+  min-width: 160px;
+  max-width: 180px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 102, 0, 0.1) 100%);
+  opacity: 0;
+  transition: var(--transition);
+  pointer-events: none;
+}
+
+.menu-item:hover::before {
+  opacity: 1;
 }
 
 .menu-item:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
 
 .menu-item img {
@@ -76,23 +120,28 @@
   height: 140px;
   object-fit: contain;
   transition: var(--transition);
-  filter: brightness(1.1);
+  filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  border-radius: var(--border-radius-md);
 }
 
 .menu-item:hover img {
-  transform: scale(1.08);
+  transform: scale(1.1) rotate(2deg);
+  filter: brightness(1.2) drop-shadow(0 8px 16px rgba(255, 102, 0, 0.3));
 }
 
 .menu-item h3 {
   margin-top: var(--spacing-sm);
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
   color: var(--text-dark);
   transition: var(--transition);
+  text-align: center;
+  line-height: var(--leading-tight);
 }
 
 .menu-item:hover h3 {
   color: var(--primary-color);
+  text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -156,18 +205,29 @@
   }
 }
 
-/* ===================== ACTIVE STATE ===================== */
+/* ===================== ENHANCED ACTIVE STATE ===================== */
 .menu-item.active {
-  background: var(--bg-tertiary);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
   border: 2px solid var(--primary-color);
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-glow);
+}
+
+.menu-item.active::before {
+  opacity: 0;
 }
 
 .menu-item.active h3 {
-  color: var(--primary-color);
-  font-weight: 700;
+  color: var(--white);
+  font-weight: 800;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .menu-item.active img {
-  filter: brightness(1.2) contrast(1.1);
+  filter: brightness(1.3) contrast(1.2) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  transform: scale(1.05);
+}
+
+.menu-item.active:hover {
+  transform: scale(1.1);
 }

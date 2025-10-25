@@ -1,0 +1,86 @@
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: var(--z-fixed);
+}
+
+.scroll-btn {
+  width: 56px;
+  height: 56px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-full);
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-lg);
+  animation: fadeInUp 0.3s ease;
+}
+
+.scroll-btn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--primary-color);
+}
+
+.scroll-btn:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.scroll-btn svg {
+  transition: var(--transition);
+}
+
+.scroll-btn:hover svg {
+  transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+  
+  .scroll-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .scroll-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-btn {
+    animation: none;
+    transition: none;
+  }
+  
+  .scroll-btn:hover {
+    transform: none;
+  }
+}

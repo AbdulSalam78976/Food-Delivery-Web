@@ -79,6 +79,7 @@ function Hero() {
             <img 
               src={img.image} 
               alt={`hero-slide-${img.id}`}
+              loading="lazy"
               onError={(e) => {
                 // Hide broken images
                 e.target.style.display = 'none';

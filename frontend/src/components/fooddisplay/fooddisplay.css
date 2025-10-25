@@ -1,8 +1,21 @@
-/* ===================== FOOD DISPLAY SECTION ===================== */
+/* ===================== ENHANCED FOOD DISPLAY SECTION ===================== */
 .food-display {
-  padding: var(--spacing-xxl) var(--container-padding);
-  background: var(--bg-dark);
+  padding: var(--spacing-3xl) var(--container-padding);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-dark) 100%);
   color: var(--text-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.food-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(255, 102, 0, 0.03) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .food-container {
@@ -11,20 +24,42 @@
 }
 
 .food-section-title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
   text-align: center;
   margin-bottom: var(--spacing-xl);
-  color: var(--text-dark);
+  background: linear-gradient(135deg, var(--text-dark), var(--primary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-family: 'Outfit', sans-serif;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
 }
 
-/* ===================== FOOD GRID ===================== */
+/* ===================== ENHANCED FOOD GRID ===================== */
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-  padding: 0 var(--container-padding);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.food-grid::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 102, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* ===================== FOOD GRID ===================== */

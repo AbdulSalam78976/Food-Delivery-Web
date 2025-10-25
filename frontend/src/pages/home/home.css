@@ -1,0 +1,85 @@
+/* Enhanced Home Page Styling */
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-secondary) 100%);
+}
+
+.hero-section {
+  animation-delay: 0.1s;
+}
+
+.menu-section {
+  animation-delay: 0.3s;
+}
+
+.food-section {
+  animation-delay: 0.5s;
+}
+
+/* Smooth scroll behavior for section navigation */
+.home-page section {
+  scroll-margin-top: 100px;
+}
+
+/* Enhanced section spacing */
+.hero-section,
+.menu-section,
+.food-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add subtle background patterns */
+.menu-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255, 102, 0, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.food-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(0, 212, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .home-page section {
+    scroll-margin-top: 80px;
+  }
+}
+
+/* Intersection Observer animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Performance optimization for animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-scale-in,
+  .animate-on-scroll {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

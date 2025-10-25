@@ -11,12 +11,19 @@ export default function Home() {
   const [category, setCategory] = React.useState('All');
   
   return (
-    <div>
-    
-      <Hero />
-      <ExploreMenu category={category} setCategory={setCategory} />
+    <div className="home-page">
+      <section className="hero-section animate-fade-in">
+        <Hero />
+      </section>
       
-      <FoodDisplay category={category} />
+      <section className="menu-section animate-slide-up">
+        <ExploreMenu category={category} setCategory={setCategory} />
+      </section>
+      
+      <section className="food-section animate-slide-up">
+        <FoodDisplay category={category} />
+      </section>
+      
       <GradientDivider />
       <Footer />
     </div>

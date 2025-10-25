@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { databaseService } from "../../lib/database";
 import { useAuth } from "../../hooks/useAuth";
+import { useAppLoader } from "../../contexts/AppLoaderContext";
 
 export const StoreContext = createContext(null);
 
@@ -10,6 +11,7 @@ export const StoreContextProvider = (props) => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user, isAuthenticated } = useAuth();
+    const { updateLoadingStep } = useAppLoader();
 
     // Fetch food items and categories from Supabase
     useEffect(() => {
@@ -34,6 +36,7 @@ export const StoreContextProvider = (props) => {
                 console.error('Error fetching data:', error);
             } finally {
                 setLoading(false);
+                updateLoadingStep('data', true);
             }
         };
 
